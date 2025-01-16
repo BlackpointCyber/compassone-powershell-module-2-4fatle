@@ -1,0 +1,79 @@
+*.xml
+*.json
+TestResults/
+*.test-results
+*.pester.xml
+test-output/
+junit/
+nunit/
+xunit/
+
+# Coverage Reports
+*.coverage
+*.coveragexml
+coverage.xml
+coverage/
+*.opencover.xml
+*.cobertura.xml
+*.jacoco.xml
+lcov.info
+
+# Log Files
+*.log
+*.testlog
+logs/
+test-logs/
+run-logs/
+debug-logs/
+trace-logs/
+
+# Temporary Files
+*.tmp
+temp/
+*.temp
+~$*
+.~*
+*.cache
+*.bak
+*.swp
+
+# Configuration Artifacts
+*.test.config
+*.test.json
+*.test.xml
+config.*.json
+
+# Build and Runtime Artifacts
+bin/
+obj/
+out/
+build/
+dist/
+
+# IDE and Editor Artifacts
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Operating System Artifacts
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Package Manager Artifacts
+packages/
+node_modules/
+*.nupkg
+*.npm
+*.yarn
+
+# Misc Test Artifacts
+*.trx
+*.vsp
+*.psess
+*.testsettings
+*.testrunconfig
