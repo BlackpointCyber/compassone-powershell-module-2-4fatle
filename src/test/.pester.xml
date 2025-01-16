@@ -1,0 +1,55 @@
+<?xml version="5.0.0" encoding="UTF-8" standalone="yes"?>
+<Pester xmlns="http://pester.dev/schema/v1">
+  <!-- Test execution configuration -->
+  <Run>
+    <Path>./PSCompassOne.*.Tests.ps1</Path>
+    <PassThru>true</PassThru>
+    <SkipRemainingOnFailure>None</SkipRemainingOnFailure>
+    <Exit>true</Exit>
+  </Run>
+
+  <!-- Test filtering configuration -->
+  <Filter>
+    <ExcludeTag>Integration</ExcludeTag>
+  </Filter>
+
+  <!-- Code coverage configuration -->
+  <CodeCoverage>
+    <Enabled>true</Enabled>
+    <OutputFormat>JaCoCo</OutputFormat>
+    <OutputPath>./coverage/coverage.xml</OutputPath>
+    <OutputEncoding>UTF8</OutputEncoding>
+    <MinimumThreshold>80</MinimumThreshold>
+    <CoveragePercentTarget>85</CoveragePercentTarget>
+  </CodeCoverage>
+
+  <!-- Test result output configuration -->
+  <TestResult>
+    <Enabled>true</Enabled>
+    <OutputFormat>NUnitXml</OutputFormat>
+    <OutputPath>./results/test-results.xml</OutputPath>
+    <OutputEncoding>UTF8</OutputEncoding>
+  </TestResult>
+
+  <!-- Assertion configuration -->
+  <Should>
+    <ErrorAction>Stop</ErrorAction>
+  </Should>
+
+  <!-- Debug configuration -->
+  <Debug>
+    <ShowFullErrors>true</ShowFullErrors>
+    <WriteDebugMessages>false</WriteDebugMessages>
+    <WriteDebugMessagesFrom>
+      <Item>Discovery</Item>
+      <Item>Skip</Item>
+      <Item>Mock</Item>
+    </WriteDebugMessagesFrom>
+  </Debug>
+
+  <!-- Output configuration -->
+  <Output>
+    <Verbosity>Detailed</Verbosity>
+    <CIFormat>Auto</CIFormat>
+  </Output>
+</Pester>
