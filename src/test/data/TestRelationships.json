@@ -1,0 +1,239 @@
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "source_id": "550e8400-e29b-41d4-a716-446655440001",
+    "target_id": "550e8400-e29b-41d4-a716-446655440002",
+    "type": "connects_to",
+    "direction": "outbound",
+    "properties": {
+      "name": "Basic Network Connection",
+      "description": "Basic test case for network connectivity relationship",
+      "tags": ["basic", "network", "test"],
+      "created_at": "2024-01-20T10:00:00Z",
+      "updated_at": "2024-01-20T10:00:00Z",
+      "test_category": "basic",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440003",
+    "source_id": "550e8400-e29b-41d4-a716-446655440004",
+    "target_id": "550e8400-e29b-41d4-a716-446655440005",
+    "type": "depends_on",
+    "direction": "inbound",
+    "properties": {
+      "name": "Basic Dependency",
+      "description": "Basic test case for dependency relationship",
+      "tags": ["basic", "dependency", "test"],
+      "created_at": "2024-01-20T10:01:00Z",
+      "updated_at": "2024-01-20T10:01:00Z",
+      "test_category": "basic",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440006",
+    "source_id": "550e8400-e29b-41d4-a716-446655440007",
+    "target_id": "550e8400-e29b-41d4-a716-446655440008",
+    "type": "contains",
+    "direction": "outbound",
+    "properties": {
+      "name": "Basic Containment",
+      "description": "Basic test case for containment relationship",
+      "tags": ["basic", "containment", "test"],
+      "created_at": "2024-01-20T10:02:00Z",
+      "updated_at": "2024-01-20T10:02:00Z",
+      "test_category": "basic",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440009",
+    "source_id": "550e8400-e29b-41d4-a716-446655440010",
+    "target_id": "550e8400-e29b-41d4-a716-446655440011",
+    "type": "manages",
+    "direction": "outbound",
+    "properties": {
+      "name": "Basic Management",
+      "description": "Basic test case for management relationship",
+      "tags": ["basic", "management", "test"],
+      "created_at": "2024-01-20T10:03:00Z",
+      "updated_at": "2024-01-20T10:03:00Z",
+      "test_category": "basic",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440012",
+    "source_id": "550e8400-e29b-41d4-a716-446655440013",
+    "target_id": "550e8400-e29b-41d4-a716-446655440014",
+    "type": "monitors",
+    "direction": "outbound",
+    "properties": {
+      "name": "Basic Monitoring",
+      "description": "Basic test case for monitoring relationship",
+      "tags": ["basic", "monitoring", "test"],
+      "created_at": "2024-01-20T10:04:00Z",
+      "updated_at": "2024-01-20T10:04:00Z",
+      "test_category": "basic",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440015",
+    "source_id": "550e8400-e29b-41d4-a716-446655440016",
+    "target_id": "550e8400-e29b-41d4-a716-446655440017",
+    "type": "connects_to",
+    "direction": "bidirectional",
+    "properties": {
+      "name": "Complex Bidirectional Connection",
+      "description": "Complex test case for bidirectional network connectivity",
+      "tags": ["complex", "network", "bidirectional", "test"],
+      "created_at": "2024-01-20T10:05:00Z",
+      "updated_at": "2024-01-20T10:05:00Z",
+      "test_category": "complex",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440018",
+    "source_id": "550e8400-e29b-41d4-a716-446655440019",
+    "target_id": "550e8400-e29b-41d4-a716-446655440020",
+    "type": "depends_on",
+    "direction": "outbound",
+    "properties": {
+      "name": "Complex Dependency Chain",
+      "description": "Complex test case for multi-hop dependency chain",
+      "tags": ["complex", "dependency", "chain", "test"],
+      "created_at": "2024-01-20T10:06:00Z",
+      "updated_at": "2024-01-20T10:06:00Z",
+      "test_category": "complex",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440021",
+    "source_id": "550e8400-e29b-41d4-a716-446655440022",
+    "target_id": "550e8400-e29b-41d4-a716-446655440023",
+    "type": "contains",
+    "direction": "outbound",
+    "properties": {
+      "name": "Complex Nested Containment",
+      "description": "Complex test case for nested containment relationships",
+      "tags": ["complex", "containment", "nested", "test"],
+      "created_at": "2024-01-20T10:07:00Z",
+      "updated_at": "2024-01-20T10:07:00Z",
+      "test_category": "complex",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440024",
+    "source_id": "550e8400-e29b-41d4-a716-446655440025",
+    "target_id": "550e8400-e29b-41d4-a716-446655440026",
+    "type": "manages",
+    "direction": "bidirectional",
+    "properties": {
+      "name": "Complex Cross-type Management",
+      "description": "Complex test case for cross-type management relationships",
+      "tags": ["complex", "management", "cross-type", "test"],
+      "created_at": "2024-01-20T10:08:00Z",
+      "updated_at": "2024-01-20T10:08:00Z",
+      "test_category": "complex",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440027",
+    "source_id": "550e8400-e29b-41d4-a716-446655440028",
+    "target_id": "550e8400-e29b-41d4-a716-446655440029",
+    "type": "monitors",
+    "direction": "outbound",
+    "properties": {
+      "name": "Complex Time-sensitive Monitoring",
+      "description": "Complex test case for time-sensitive monitoring relationships",
+      "tags": ["complex", "monitoring", "time-sensitive", "test"],
+      "created_at": "2024-01-20T10:09:00Z",
+      "updated_at": "2024-01-20T10:09:00Z",
+      "test_category": "complex",
+      "expected_validation": true
+    }
+  },
+  {
+    "id": "invalid-uuid",
+    "source_id": "550e8400-e29b-41d4-a716-446655440030",
+    "target_id": "550e8400-e29b-41d4-a716-446655440031",
+    "type": "connects_to",
+    "direction": "outbound",
+    "properties": {
+      "name": "Invalid UUID",
+      "description": "Invalid test case with incorrect UUID format",
+      "tags": ["invalid", "uuid", "test"],
+      "created_at": "2024-01-20T10:10:00Z",
+      "updated_at": "2024-01-20T10:10:00Z",
+      "test_category": "invalid",
+      "expected_validation": false
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440032",
+    "source_id": "550e8400-e29b-41d4-a716-446655440032",
+    "target_id": "550e8400-e29b-41d4-a716-446655440032",
+    "type": "connects_to",
+    "direction": "outbound",
+    "properties": {
+      "name": "Self-referential Relationship",
+      "description": "Invalid test case with self-referential relationship",
+      "tags": ["invalid", "self-reference", "test"],
+      "created_at": "2024-01-20T10:11:00Z",
+      "updated_at": "2024-01-20T10:11:00Z",
+      "test_category": "invalid",
+      "expected_validation": false
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440033",
+    "source_id": "550e8400-e29b-41d4-a716-446655440034",
+    "target_id": "550e8400-e29b-41d4-a716-446655440035",
+    "type": "invalid_type",
+    "direction": "outbound",
+    "properties": {
+      "name": "Invalid Relationship Type",
+      "description": "Invalid test case with incorrect relationship type",
+      "tags": ["invalid", "type", "test"],
+      "created_at": "2024-01-20T10:12:00Z",
+      "updated_at": "2024-01-20T10:12:00Z",
+      "test_category": "invalid",
+      "expected_validation": false
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440036",
+    "source_id": "550e8400-e29b-41d4-a716-446655440037",
+    "target_id": "550e8400-e29b-41d4-a716-446655440038",
+    "type": "connects_to",
+    "direction": "invalid_direction",
+    "properties": {
+      "name": "Invalid Direction",
+      "description": "Invalid test case with incorrect direction value",
+      "tags": ["invalid", "direction", "test"],
+      "created_at": "2024-01-20T10:13:00Z",
+      "updated_at": "2024-01-20T10:13:00Z",
+      "test_category": "invalid",
+      "expected_validation": false
+    }
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440039",
+    "source_id": "550e8400-e29b-41d4-a716-446655440040",
+    "properties": {
+      "name": "Missing Required Fields",
+      "description": "Invalid test case with missing required fields",
+      "tags": ["invalid", "missing-fields", "test"],
+      "created_at": "2024-01-20T10:14:00Z",
+      "updated_at": "2024-01-20T10:14:00Z",
+      "test_category": "invalid",
+      "expected_validation": false
+    }
+  }
+]
