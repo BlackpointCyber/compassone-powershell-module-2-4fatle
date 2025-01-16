@@ -1,0 +1,239 @@
+name: Release PSCompassOne Module
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Module version to release (e.g. 1.0.0)'
+        required: true
+        type: string
+
+env:
+  POWERSHELL_TELEMETRY_OPTOUT: 1
+  MODULE_VERSION: ${{ github.event.inputs.version || github.ref_name }}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate Release Requirements
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          powershell-version: '7.3'
+
+      - name: Cache PowerShell Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.local/share/powershell/Modules
+            ~/Library/Application Support/PowerShell/Modules
+            ~\Documents\PowerShell\Modules
+            C:\Program Files\PowerShell\Modules
+          key: ${{ runner.os }}-psmodules-${{ hashFiles('**/requirements.psd1') }}
+          restore-keys: |
+            ${{ runner.os }}-psmodules-
+
+      - name: Install Dependencies
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer, Pester, platyPS -Force
+
+      - name: Validate Module Version
+        shell: pwsh
+        run: |
+          $manifestPath = "./src/PSCompassOne.psd1"
+          $manifest = Import-PowerShellDataFile $manifestPath
+          if ($manifest.ModuleVersion -ne $env:MODULE_VERSION.TrimStart('v')) {
+            throw "Module version mismatch: Manifest=$($manifest.ModuleVersion), Tag=$($env:MODULE_VERSION)"
+          }
+
+      - name: Run CI Tests
+        uses: ./.github/workflows/ci.yml
+
+      - name: Run Security Scan
+        uses: ./.github/workflows/security-scan.yml
+
+      - name: Verify Documentation
+        shell: pwsh
+        run: |
+          ./build/build.ps1 -Task ValidateDocs
+          if ($LASTEXITCODE -ne 0) {
+            throw "Documentation validation failed"
+          }
+
+  build:
+    name: Build and Package Module
+    needs: validate
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          powershell-version: '7.3'
+
+      - name: Cache PowerShell Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~\Documents\PowerShell\Modules
+            C:\Program Files\PowerShell\Modules
+          key: ${{ runner.os }}-psmodules-${{ hashFiles('**/requirements.psd1') }}
+
+      - name: Install Build Dependencies
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer, platyPS -Force
+
+      - name: Build Module
+        shell: pwsh
+        run: |
+          ./build/build.ps1 -Task Build
+          if ($LASTEXITCODE -ne 0) {
+            throw "Module build failed"
+          }
+
+      - name: Sign Module Files
+        shell: pwsh
+        env:
+          CODE_SIGNING_CERT: ${{ secrets.CODE_SIGNING_CERT }}
+          CODE_SIGNING_PWD: ${{ secrets.CODE_SIGNING_PWD }}
+        run: |
+          $certBytes = [Convert]::FromBase64String($env:CODE_SIGNING_CERT)
+          $certPath = Join-Path $env:TEMP "code-signing.pfx"
+          [IO.File]::WriteAllBytes($certPath, $certBytes)
+          
+          $securePassword = ConvertTo-SecureString $env:CODE_SIGNING_PWD -AsPlainText -Force
+          $cert = Get-PfxCertificate -FilePath $certPath -Password $securePassword
+          
+          Get-ChildItem ./output/PSCompassOne -Recurse -Include *.ps1,*.psm1,*.psd1 | 
+            Set-AuthenticodeSignature -Certificate $cert -TimestampServer "http://timestamp.digicert.com"
+          
+          Remove-Item $certPath -Force
+
+      - name: Generate Documentation
+        shell: pwsh
+        run: |
+          ./build/build.ps1 -Task BuildDocs
+          if ($LASTEXITCODE -ne 0) {
+            throw "Documentation generation failed"
+          }
+
+      - name: Create Release Notes
+        shell: pwsh
+        run: |
+          $releaseNotes = @"
+          # PSCompassOne $env:MODULE_VERSION
+          
+          ## Changes
+          $(git log --pretty=format:"* %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD)
+          
+          ## Installation
+          ```powershell
+          Install-Module PSCompassOne -RequiredVersion $($env:MODULE_VERSION.TrimStart('v'))
+          ```
+          "@
+          
+          $releaseNotes | Out-File release-notes/RELEASE.md -Encoding utf8
+
+      - name: Upload Module Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: module-package
+          path: output/PSCompassOne
+          retention-days: 7
+
+      - name: Upload Documentation Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: documentation
+          path: docs
+          retention-days: 7
+
+      - name: Upload Release Notes Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-notes
+          path: release-notes
+          retention-days: 7
+
+  publish:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://www.powershellgallery.com/packages/PSCompassOne
+    steps:
+      - name: Download Module Package
+        uses: actions/download-artifact@v2
+        with:
+          name: module-package
+          path: module
+
+      - name: Download Release Notes
+        uses: actions/download-artifact@v2
+        with:
+          name: release-notes
+          path: release-notes
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          powershell-version: '7.3'
+
+      - name: Publish to PowerShell Gallery
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          try {
+            Publish-Module -Path ./module -NuGetApiKey $env:PSGALLERY_API_KEY -Verbose
+          }
+          catch {
+            throw "Failed to publish module: $_"
+          }
+          
+          # Verify publication
+          $maxAttempts = 5
+          $attempt = 0
+          do {
+            Start-Sleep -Seconds 30
+            $published = Find-Module PSCompassOne -RequiredVersion $env:MODULE_VERSION.TrimStart('v') -ErrorAction SilentlyContinue
+            $attempt++
+          } while (-not $published -and $attempt -lt $maxAttempts)
+          
+          if (-not $published) {
+            throw "Module publication verification failed"
+          }
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: PSCompassOne ${{ env.MODULE_VERSION }}
+          body_path: release-notes/RELEASE.md
+          files: |
+            module/**/*
+          draft: false
+          prerelease: false
