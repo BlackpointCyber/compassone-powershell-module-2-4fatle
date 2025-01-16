@@ -1,0 +1,191 @@
+{
+  "systemTags": [
+    {
+      "id": "sys-001",
+      "name": "Critical",
+      "type": "severity",
+      "description": "Critical severity system tag",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z",
+      "isSystem": true,
+      "metadata": {
+        "color": "red",
+        "priority": 1,
+        "displayOrder": 1
+      }
+    },
+    {
+      "id": "sys-002",
+      "name": "Production",
+      "type": "environment",
+      "description": "Production environment system tag",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z",
+      "isSystem": true,
+      "metadata": {
+        "color": "blue",
+        "priority": 1,
+        "displayOrder": 2
+      }
+    },
+    {
+      "id": "sys-003",
+      "name": "Compliance-HIPAA",
+      "type": "compliance",
+      "description": "HIPAA compliance system tag",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z",
+      "isSystem": true,
+      "metadata": {
+        "color": "purple",
+        "priority": 2,
+        "framework": "HIPAA"
+      }
+    },
+    {
+      "id": "sys-004",
+      "name": "",
+      "type": "test",
+      "description": "Empty name test case",
+      "createdAt": "2024-01-01T00:00:00Z",
+      "updatedAt": "2024-01-01T00:00:00Z",
+      "isSystem": true,
+      "metadata": {
+        "testCase": "emptyName"
+      }
+    }
+  ],
+  "customTags": [
+    {
+      "id": "cust-001",
+      "name": "Project-Alpha",
+      "type": "project",
+      "description": "Project Alpha resources",
+      "createdAt": "2024-01-02T10:00:00Z",
+      "updatedAt": "2024-01-02T10:00:00Z",
+      "isSystem": false,
+      "metadata": {
+        "color": "green",
+        "owner": "Team-A"
+      },
+      "customProperties": {
+        "startDate": "2024-01-01",
+        "endDate": "2024-12-31",
+        "budget": 100000
+      }
+    },
+    {
+      "id": "cust-002",
+      "name": "Department-IT",
+      "type": "department",
+      "description": "IT Department resources",
+      "createdAt": "2024-01-02T11:00:00Z",
+      "updatedAt": "2024-01-02T11:00:00Z",
+      "isSystem": false,
+      "metadata": {
+        "color": "orange",
+        "owner": "IT-Admin"
+      },
+      "customProperties": {
+        "costCenter": "IT-001",
+        "manager": "John Doe"
+      }
+    },
+    {
+      "id": "cust-003",
+      "name": "特殊文字テスト",
+      "type": "test",
+      "description": "Unicode character test",
+      "createdAt": "2024-01-02T12:00:00Z",
+      "updatedAt": "2024-01-02T12:00:00Z",
+      "isSystem": false,
+      "metadata": {
+        "testCase": "unicodeSupport"
+      },
+      "customProperties": {
+        "language": "Japanese"
+      }
+    },
+    {
+      "id": "cust-004",
+      "name": "Tag-With-Very-Long-Name-That-Exceeds-Normal-Length-Limits-For-Testing-Purposes",
+      "type": "test",
+      "description": "Long name test case",
+      "createdAt": "2024-01-02T13:00:00Z",
+      "updatedAt": "2024-01-02T13:00:00Z",
+      "isSystem": false,
+      "metadata": {
+        "testCase": "longName"
+      },
+      "customProperties": {
+        "maxLength": 100
+      }
+    }
+  ],
+  "assetTags": [
+    {
+      "assetId": "asset-001",
+      "tagId": "sys-001",
+      "createdAt": "2024-01-03T00:00:00Z",
+      "updatedAt": "2024-01-03T00:00:00Z",
+      "metadata": {
+        "assignedBy": "system",
+        "reason": "automated-detection"
+      },
+      "relationshipType": "direct"
+    },
+    {
+      "assetId": "asset-001",
+      "tagId": "sys-002",
+      "createdAt": "2024-01-03T00:00:00Z",
+      "updatedAt": "2024-01-03T00:00:00Z",
+      "metadata": {
+        "assignedBy": "user",
+        "reason": "environment-classification"
+      },
+      "relationshipType": "direct"
+    },
+    {
+      "assetId": "asset-002",
+      "tagId": "cust-001",
+      "createdAt": "2024-01-03T01:00:00Z",
+      "updatedAt": "2024-01-03T01:00:00Z",
+      "metadata": {
+        "assignedBy": "user",
+        "reason": "project-assignment"
+      },
+      "relationshipType": "direct"
+    },
+    {
+      "assetId": "asset-003",
+      "tagId": "sys-003",
+      "createdAt": "2024-01-03T02:00:00Z",
+      "updatedAt": "2024-01-03T02:00:00Z",
+      "metadata": {
+        "assignedBy": "system",
+        "reason": "compliance-requirement"
+      },
+      "relationshipType": "inherited"
+    },
+    {
+      "assetId": "",
+      "tagId": "sys-001",
+      "createdAt": "2024-01-03T03:00:00Z",
+      "updatedAt": "2024-01-03T03:00:00Z",
+      "metadata": {
+        "testCase": "emptyAssetId"
+      },
+      "relationshipType": "direct"
+    },
+    {
+      "assetId": "asset-004",
+      "tagId": "",
+      "createdAt": "2024-01-03T04:00:00Z",
+      "updatedAt": "2024-01-03T04:00:00Z",
+      "metadata": {
+        "testCase": "emptyTagId"
+      },
+      "relationshipType": "direct"
+    }
+  ]
+}
