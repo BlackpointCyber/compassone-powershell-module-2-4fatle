@@ -1,0 +1,114 @@
+{
+  "standardUsers": [
+    {
+      "name": "John Smith",
+      "email": "john.smith@test.compassone.com",
+      "username": "jsmith",
+      "mfaEnabled": false,
+      "admin": false,
+      "group": "users"
+    },
+    {
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@test.compassone.com",
+      "username": "sjohnson",
+      "mfaEnabled": true,
+      "admin": false,
+      "group": "analysts"
+    },
+    {
+      "name": "David Wilson",
+      "email": "david.wilson@test.compassone.com",
+      "username": "dwilson",
+      "mfaEnabled": false,
+      "admin": false,
+      "group": "readonly"
+    }
+  ],
+  "adminUsers": [
+    {
+      "name": "Admin User",
+      "email": "admin@test.compassone.com",
+      "username": "admin",
+      "mfaEnabled": true,
+      "admin": true,
+      "group": "admin-global"
+    },
+    {
+      "name": "Security Admin",
+      "email": "security.admin@test.compassone.com",
+      "username": "secadmin",
+      "mfaEnabled": true,
+      "admin": true,
+      "group": "admin-security"
+    },
+    {
+      "name": "System Admin",
+      "email": "system.admin@test.compassone.com",
+      "username": "sysadmin",
+      "mfaEnabled": true,
+      "admin": true,
+      "group": "admin-system"
+    }
+  ],
+  "mfaUsers": [
+    {
+      "name": "MFA Test User",
+      "email": "mfa.test@test.compassone.com",
+      "username": "mfatest",
+      "mfaEnabled": true,
+      "admin": false,
+      "group": "users"
+    },
+    {
+      "name": "MFA Analyst",
+      "email": "mfa.analyst@test.compassone.com",
+      "username": "mfaanalyst",
+      "mfaEnabled": true,
+      "admin": false,
+      "group": "analysts"
+    }
+  ],
+  "edgeCaseUsers": [
+    {
+      "name": "Test-User With-Special-Characters!",
+      "email": "test.special+chars@test.compassone.com",
+      "username": "test-special",
+      "mfaEnabled": true,
+      "admin": false,
+      "group": "test-group"
+    },
+    {
+      "name": "Максим Иванов",
+      "email": "maxim.ivanov@test.compassone.com",
+      "username": "mivanov",
+      "mfaEnabled": false,
+      "admin": false,
+      "group": "users"
+    },
+    {
+      "name": "User with exactly one hundred characters in name field which tests the maximum length validation rule",
+      "email": "max.length@test.compassone.com",
+      "username": "maxlength",
+      "mfaEnabled": false,
+      "admin": false,
+      "group": "test-group"
+    },
+    {
+      "name": "Empty Optional Fields",
+      "email": "empty.fields@test.compassone.com",
+      "username": "emptyfields",
+      "mfaEnabled": null,
+      "admin": null,
+      "group": null
+    },
+    {
+      "name": "Minimum Length",
+      "email": "a@test.compassone.com",
+      "username": "min",
+      "mfaEnabled": false,
+      "admin": false,
+      "group": "qa"
+    }
+  ]
+}
