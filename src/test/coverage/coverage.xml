@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd">
+<report name="PSCompassOne Coverage Report" timestamp="2024-01-21T10:30:45">
+    <package name="PSCompassOne">
+        <class name="PSCompassOne/Public/Asset/Get-PSCompassOneAsset">
+            <counter type="INSTRUCTION" missed="12" covered="245"/>
+            <counter type="BRANCH" missed="2" covered="42"/>
+            <counter type="LINE" missed="4" covered="86"/>
+            <counter type="COMPLEXITY" missed="1" covered="18"/>
+            <counter type="METHOD" missed="0" covered="6"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne/Public/Asset/New-PSCompassOneAsset">
+            <counter type="INSTRUCTION" missed="8" covered="186"/>
+            <counter type="BRANCH" missed="1" covered="32"/>
+            <counter type="LINE" missed="3" covered="64"/>
+            <counter type="COMPLEXITY" missed="1" covered="14"/>
+            <counter type="METHOD" missed="0" covered="5"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne/Public/Asset/Set-PSCompassOneAsset">
+            <counter type="INSTRUCTION" missed="15" covered="210"/>
+            <counter type="BRANCH" missed="3" covered="38"/>
+            <counter type="LINE" missed="5" covered="72"/>
+            <counter type="COMPLEXITY" missed="2" covered="16"/>
+            <counter type="METHOD" missed="1" covered="5"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne/Public/Finding/Get-PSCompassOneFinding">
+            <counter type="INSTRUCTION" missed="10" covered="195"/>
+            <counter type="BRANCH" missed="2" covered="36"/>
+            <counter type="LINE" missed="4" covered="68"/>
+            <counter type="COMPLEXITY" missed="1" covered="15"/>
+            <counter type="METHOD" missed="0" covered="5"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne/Private/API/Invoke-PSCompassOneAPI">
+            <counter type="INSTRUCTION" missed="18" covered="324"/>
+            <counter type="BRANCH" missed="4" covered="58"/>
+            <counter type="LINE" missed="6" covered="112"/>
+            <counter type="COMPLEXITY" missed="2" covered="24"/>
+            <counter type="METHOD" missed="1" covered="8"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne/Private/Auth/Get-PSCompassOneToken">
+            <counter type="INSTRUCTION" missed="6" covered="145"/>
+            <counter type="BRANCH" missed="1" covered="26"/>
+            <counter type="LINE" missed="2" covered="48"/>
+            <counter type="COMPLEXITY" missed="1" covered="12"/>
+            <counter type="METHOD" missed="0" covered="4"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <counter type="INSTRUCTION" missed="69" covered="1305"/>
+        <counter type="BRANCH" missed="13" covered="232"/>
+        <counter type="LINE" missed="24" covered="450"/>
+        <counter type="COMPLEXITY" missed="8" covered="99"/>
+        <counter type="METHOD" missed="2" covered="33"/>
+        <counter type="CLASS" missed="0" covered="6"/>
+    </package>
+    <package name="PSCompassOne.Tests">
+        <class name="PSCompassOne.Tests/Asset/Get-PSCompassOneAsset.Tests">
+            <counter type="INSTRUCTION" missed="4" covered="186"/>
+            <counter type="BRANCH" missed="1" covered="32"/>
+            <counter type="LINE" missed="2" covered="64"/>
+            <counter type="COMPLEXITY" missed="1" covered="14"/>
+            <counter type="METHOD" missed="0" covered="5"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <class name="PSCompassOne.Tests/Finding/Get-PSCompassOneFinding.Tests">
+            <counter type="INSTRUCTION" missed="6" covered="165"/>
+            <counter type="BRANCH" missed="1" covered="28"/>
+            <counter type="LINE" missed="2" covered="56"/>
+            <counter type="COMPLEXITY" missed="1" covered="12"/>
+            <counter type="METHOD" missed="0" covered="4"/>
+            <counter type="CLASS" missed="0" covered="1"/>
+        </class>
+        <counter type="INSTRUCTION" missed="10" covered="351"/>
+        <counter type="BRANCH" missed="2" covered="60"/>
+        <counter type="LINE" missed="4" covered="120"/>
+        <counter type="COMPLEXITY" missed="2" covered="26"/>
+        <counter type="METHOD" missed="0" covered="9"/>
+        <counter type="CLASS" missed="0" covered="2"/>
+    </package>
+    <counter type="INSTRUCTION" missed="79" covered="1656"/>
+    <counter type="BRANCH" missed="15" covered="292"/>
+    <counter type="LINE" missed="28" covered="570"/>
+    <counter type="COMPLEXITY" missed="10" covered="125"/>
+    <counter type="METHOD" missed="2" covered="42"/>
+    <counter type="CLASS" missed="0" covered="8"/>
+</report>
