@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pscompassone-logs-pv
+  labels:
+    app: pscompassone
+    type: local
+    environment: production
+    component: storage
+    managed-by: kubernetes
+  annotations:
+    backup.kubernetes.io/schedule: "0 0 * * *"
+    backup.kubernetes.io/retention: "30d"
+    encryption.kubernetes.io/enabled: "true"
+    monitoring.kubernetes.io/scrape: "true"
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /var/log/pscompassone
+    type: DirectoryOrCreate
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pscompassone-logs
+  namespace: pscompassone
+  labels:
+    app: pscompassone
+    component: storage
+    managed-by: kubernetes
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "standard"
+    volume.kubernetes.io/storage-provisioner: "kubernetes.io/no-provisioner"
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+    limits:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      app: pscompassone
+      type: local
