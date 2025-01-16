@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pscompassone
+  namespace: pscompassone
+  labels:
+    app: pscompassone
+    version: 1.0.0
+    component: security-module
+    part-of: security-operations
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+    security.policy/version: "v1.0"
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: pscompassone
+  template:
+    metadata:
+      labels:
+        app: pscompassone
+        security-context: restricted
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 2000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: pscompassone
+        image: mcr.microsoft.com/powershell:7.3
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+          name: http
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        livenessProbe:
+          exec:
+            command:
+            - pwsh
+            - -c
+            - Test-ModuleHealth.ps1
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          exec:
+            command:
+            - pwsh
+            - -c
+            - Test-ModuleReady.ps1
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/pscompassone/config
+          readOnly: true
+        - name: secrets-volume
+          mountPath: /etc/pscompassone/secrets
+          readOnly: true
+        - name: logs-volume
+          mountPath: /var/log/pscompassone
+        - name: tmp-volume
+          mountPath: /tmp
+        env:
+        - name: POWERSHELL_TELEMETRY_OPTOUT
+          value: "1"
+        - name: PSModulePath
+          valueFrom:
+            configMapKeyRef:
+              name: pscompassone-config
+              key: PSModulePath
+        - name: TZ
+          value: "UTC"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: pscompassone-config
+          defaultMode: 0400
+      - name: secrets-volume
+        secret:
+          secretName: pscompassone-secrets
+          defaultMode: 0400
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: pscompassone-logs
+      - name: tmp-volume
+        emptyDir:
+          medium: Memory
+          sizeLimit: 64Mi
