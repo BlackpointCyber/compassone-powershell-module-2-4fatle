@@ -1,0 +1,28 @@
+* @blackpoint/pscompassone-maintainers
+
+# Core PowerShell module files require both core and security team review
+src/* @blackpoint/pscompassone-core @blackpoint/pscompassone-security
+
+# All PowerShell files require mandatory core and security review
+src/**/*.ps1 @blackpoint/pscompassone-core @blackpoint/pscompassone-security
+
+# Test files require QA and core team review
+src/test/* @blackpoint/pscompassone-qa @blackpoint/pscompassone-core
+
+# Security-specific test files require security and QA team review
+src/test/security/* @blackpoint/pscompassone-security @blackpoint/pscompassone-qa
+
+# Infrastructure files require DevOps and security review
+infrastructure/* @blackpoint/pscompassone-devops @blackpoint/pscompassone-security
+
+# CI/CD workflow files require DevOps and security review
+.github/workflows/* @blackpoint/pscompassone-devops @blackpoint/pscompassone-security
+
+# Authentication-related code requires dedicated security team review
+src/**/auth/** @blackpoint/pscompassone-security
+
+# Cryptography-related code requires dedicated security team review
+src/**/crypto/** @blackpoint/pscompassone-security
+
+# Security documentation requires both security and core team review
+docs/security/* @blackpoint/pscompassone-security @blackpoint/pscompassone-core
