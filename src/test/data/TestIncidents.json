@@ -1,0 +1,134 @@
+[
+  {
+    "id": "INC-001",
+    "title": "Windows Server Critical Alert",
+    "description": "High CPU utilization detected on production web server",
+    "status": "Active",
+    "severity": "High",
+    "createdAt": "2024-01-20T10:30:00Z",
+    "updatedAt": "2024-01-20T10:35:00Z",
+    "assignedTo": "john.smith",
+    "relatedAssets": [
+      {
+        "id": "ASSET-001",
+        "path": "\\\\server01\\c$\\windows\\system32",
+        "platform": "Windows"
+      }
+    ],
+    "relatedFindings": ["FND-001", "FND-002"],
+    "tags": ["production", "server", "performance"],
+    "parallelExecutionData": {
+      "executionId": "EXEC-001",
+      "threadId": "THREAD-001",
+      "isolationLevel": "ReadCommitted"
+    }
+  },
+  {
+    "id": "INC-002",
+    "title": "Linux Service Failure",
+    "description": "Database service stopped unexpectedly on production database server",
+    "status": "Escalated",
+    "severity": "Critical",
+    "createdAt": "2024-01-20T11:00:00Z",
+    "updatedAt": "2024-01-20T11:15:00Z",
+    "escalatedAt": "2024-01-20T11:10:00Z",
+    "assignedTo": "jane.doe",
+    "relatedAssets": [
+      {
+        "id": "ASSET-002",
+        "path": "/var/lib/postgresql/data",
+        "platform": "Linux"
+      }
+    ],
+    "relatedFindings": ["FND-003"],
+    "tags": ["production", "database", "service-failure"],
+    "parallelExecutionData": {
+      "executionId": "EXEC-002",
+      "threadId": "THREAD-002",
+      "isolationLevel": "Serializable"
+    }
+  },
+  {
+    "id": "INC-003",
+    "title": "macOS Security Update Required",
+    "description": "Critical security patches pending installation",
+    "status": "Active",
+    "severity": "Medium",
+    "createdAt": "2024-01-20T12:00:00Z",
+    "updatedAt": "2024-01-20T12:05:00Z",
+    "assignedTo": "bob.wilson",
+    "relatedAssets": [
+      {
+        "id": "ASSET-003",
+        "path": "/Users/shared/Applications",
+        "platform": "macOS"
+      }
+    ],
+    "relatedFindings": ["FND-004", "FND-005"],
+    "tags": ["workstation", "security-update"],
+    "parallelExecutionData": {
+      "executionId": "EXEC-003",
+      "threadId": "THREAD-003",
+      "isolationLevel": "ReadUncommitted"
+    }
+  },
+  {
+    "id": "INC-004",
+    "title": "Cross-Platform Network Issue",
+    "description": "Network connectivity issues affecting multiple systems",
+    "status": "Resolved",
+    "severity": "High",
+    "createdAt": "2024-01-20T13:00:00Z",
+    "updatedAt": "2024-01-20T14:30:00Z",
+    "resolvedAt": "2024-01-20T14:30:00Z",
+    "assignedTo": "sarah.tech",
+    "relatedAssets": [
+      {
+        "id": "ASSET-004",
+        "path": "\\\\networkshare\\public",
+        "platform": "Windows"
+      },
+      {
+        "id": "ASSET-005",
+        "path": "/mnt/shared",
+        "platform": "Linux"
+      },
+      {
+        "id": "ASSET-006",
+        "path": "/Volumes/NetworkShare",
+        "platform": "macOS"
+      }
+    ],
+    "relatedFindings": ["FND-006", "FND-007", "FND-008"],
+    "tags": ["network", "cross-platform", "connectivity"],
+    "parallelExecutionData": {
+      "executionId": "EXEC-004",
+      "threadId": "THREAD-004",
+      "isolationLevel": "RepeatableRead"
+    }
+  },
+  {
+    "id": "INC-005",
+    "title": "Concurrent Access Test",
+    "description": "Test incident for parallel execution scenarios",
+    "status": "Active",
+    "severity": "Low",
+    "createdAt": "2024-01-20T15:00:00Z",
+    "updatedAt": "2024-01-20T15:01:00Z",
+    "assignedTo": "test.user",
+    "relatedAssets": [
+      {
+        "id": "ASSET-007",
+        "path": "/test/concurrent/access",
+        "platform": "Linux"
+      }
+    ],
+    "relatedFindings": ["FND-009"],
+    "tags": ["test", "parallel-execution"],
+    "parallelExecutionData": {
+      "executionId": "EXEC-005",
+      "threadId": "THREAD-005",
+      "isolationLevel": "Snapshot"
+    }
+  }
+]
