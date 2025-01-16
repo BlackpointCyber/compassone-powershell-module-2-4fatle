@@ -1,0 +1,42 @@
+.git
+.github
+
+# Development Environment
+.vscode
+
+# Test Artifacts
+src/test/coverage
+src/test/results
+
+# Documentation and Logs
+**/*.log
+**/*.md
+
+# PowerShell Files
+**/*.psd1
+
+# Security Files
+**/*.key
+**/*.pfx
+**/*.pem
+
+# Infrastructure Configurations
+infrastructure/azure
+infrastructure/aws
+infrastructure/gcp
+infrastructure/terraform
+infrastructure/kubernetes
+
+# Sensitive Files
+**/test-credentials.psd1
+**/secrets.json
+**/appsettings.*.json
+
+# Development Artifacts
+**/*.log
+.vscode
+
+# Exceptions - Files to Include
+!PSCompassOne.psd1
+!src/test/config/test-environment.psd1
+!README.md
