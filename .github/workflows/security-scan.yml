@@ -1,0 +1,180 @@
+name: Security Scan
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at midnight UTC
+  push:
+    branches: 
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  POWERSHELL_TELEMETRY_OPTOUT: 1
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  SECURITY_SCAN_LEVEL: high
+  SCAN_OUTPUT_FORMAT: sarif
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codeql_analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: powershell
+          queries: security-extended,security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:powershell"
+          output: security-results/codeql
+
+  dependency_check:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          powershell-version: '7.3'
+
+      - name: Run Dependency Scanner
+        uses: aquasecurity/trivy-action@0.8.0
+        with:
+          scan-type: 'fs'
+          format: 'sarif'
+          output: 'dependency-report/trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Dependency Results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: dependency-report/trivy-results.sarif
+          category: dependencies
+
+  secret_scanning:
+    name: Secret and Credential Detection
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Super-Linter
+        uses: github/super-linter@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_POWERSHELL: true
+          VALIDATE_SECRETS: true
+          DEFAULT_BRANCH: main
+          SARIF_REPORT: true
+          OUTPUT_FORMAT: sarif
+          OUTPUT_FOLDER: security-results/linting
+
+      - name: Upload Secret Scanning Results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: security-results/linting/powershell.sarif
+          category: secrets
+
+  security_tests:
+    name: Security Test Suite
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          powershell-version: '7.3'
+
+      - name: Install Test Dependencies
+        shell: pwsh
+        run: |
+          Install-Module -Name Pester -Force -SkipPublisherCheck
+          Install-Module -Name PSScriptAnalyzer -Force
+
+      - name: Run Security Tests
+        shell: pwsh
+        run: |
+          $testResults = Invoke-Pester -Path ./src/test/PSCompassOne.Security.Tests.ps1 -PassThru -OutputFormat NUnitXml -OutputFile ./test-results.xml
+          if ($testResults.FailedCount -gt 0) {
+            throw "Security tests failed"
+          }
+
+      - name: Run PSScriptAnalyzer Security Rules
+        shell: pwsh
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path . -Settings PSGallery -Severity Error,Warning -ExcludeRule PSAvoidUsingPlainTextForPassword
+          $results | ConvertTo-Json | Out-File security-results/scriptanalyzer.json
+          if ($results.Length -gt 0) {
+            throw "PSScriptAnalyzer found security issues"
+          }
+
+  upload_artifacts:
+    name: Upload Security Reports
+    needs: [codeql_analysis, dependency_check, secret_scanning, security_tests]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Upload Security Scan Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: security-scan-results
+          path: security-results/
+          retention-days: 30
+
+      - name: Upload Dependency Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency-report
+          path: dependency-report/
+          retention-days: 30
+
+      - name: Upload Compliance Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: compliance-report
+          path: |
+            security-results/
+            dependency-report/
+            test-results.xml
+          retention-days: 30
+
+timeout-minutes: 120
