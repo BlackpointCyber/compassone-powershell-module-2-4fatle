@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pscompassone-service
+  namespace: pscompassone
+  labels:
+    app: pscompassone
+    component: service
+    version: 1.0.0
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "80"
+    service.beta.kubernetes.io/monitor: "true"
+    # Security annotations
+    security.kubernetes.io/network-policy-enforced: "true"
+    security.kubernetes.io/internal-only: "true"
+    # Monitoring and observability
+    monitoring.kubernetes.io/scrape-interval: "30s"
+    monitoring.kubernetes.io/port: "80"
+
+spec:
+  # Restrict to cluster-internal access only
+  type: ClusterIP
+
+  # Port configuration for HTTP traffic
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+
+  # Pod selector using deployment labels
+  selector:
+    app: pscompassone
+
+  # Session affinity configuration for stable connections
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800  # 3 hour session persistence
+
+  # Internal traffic policy for enhanced security
+  internalTrafficPolicy: Cluster
+
+  # Publishing not allowed for internal services
+  publishNotReadyAddresses: false
+
+  # IP families configuration
+  ipFamilyPolicy: SingleStack
+  ipFamilies:
+    - IPv4
