@@ -1,0 +1,17 @@
+*.xml
+
+# JSON coverage reports
+*.json
+
+# HTML coverage reports
+*.html
+*.htm
+
+# Visual Studio code coverage files
+*.coverage
+
+# Coverage subdirectories
+coverage/
+
+# Keep gitignore file
+!.gitignore
