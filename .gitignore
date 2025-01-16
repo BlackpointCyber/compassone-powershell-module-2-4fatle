@@ -1,0 +1,109 @@
+*.psd1
+!/src/PSCompassOne.psd1
+/src/test/config/*.psd1
+*.psm1
+!/src/PSCompassOne.psm1
+*.ps1xml
+*.nupkg
+*.snupkg
+
+# Test and Coverage
+/src/test/coverage/
+TestResults/
+*.coverage
+coverage.xml
+test-results.xml
+
+# IDE and Editor Files
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.docstates
+*.userprefs
+.idea/
+*.swp
+*~
+
+# Build and Package Artifacts
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rtifacts/
+*.tmp
+*.bak
+*.cache
+
+# Documentation
+docs/_site/
+node_modules/
+.sass-cache/
+.jekyll-metadata
+.jekyll-cache/
+
+# Security and Credentials
+*.key
+*.pfx
+*.cer
+*.crt
+*.pem
+*.env
+*.secret
+*.token
+*.password
+*.[Cc]redentials.*
+*.[Ss]ecret.*
+*.[Kk]ey.*
+
+# Infrastructure as Code
+/infrastructure/terraform/.terraform/
+/infrastructure/terraform/*.tfstate
+/infrastructure/terraform/*.tfstate.*
+/infrastructure/terraform/*.tfvars
+/infrastructure/terraform/terraform.tfvars
+/infrastructure/terraform/.terraformrc
+/infrastructure/terraform/crash.log
+
+# Operating System
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Logs and Diagnostics
+*.log
+logs/
+Log/
+*.trace
+*.etl
+*.evtx
+
+# Runtime and Cache
+[Cc]ache/
+*.cache
+*.temp
+*.tmp
+
+# Package Management
+packages/
+*.nupkg
+*.snupkg
+package-lock.json
+yarn.lock
+
+# Miscellaneous
+[Tt]emp/
+*.bak
+*.swp
+*~.nib
+*.pidb
+*.resources
+*.tlb
+*.tli
+*.tlh
+*.tmp_proj
+*.[Pp]ublish.xml
