@@ -1,0 +1,111 @@
+version: "3.8"
+
+services:
+  pscompassone:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+      args:
+        VERSION: ${VERSION:-latest}
+        BUILD_DATE: ${BUILD_DATE}
+        VCS_REF: ${VCS_REF}
+    environment:
+      - PSCOMPASSONE_CONFIG=/etc/pscompassone/config
+      - PSModulePath=/usr/local/share/powershell/Modules
+      - PSCOMPASSONE_LOG_LEVEL=Information
+      - PSCOMPASSONE_API_TIMEOUT=30
+      - TZ=UTC
+    volumes:
+      - config:/etc/pscompassone/config:ro
+      - logs:/var/log/pscompassone
+      - modules:/usr/local/share/powershell/Modules:ro
+    healthcheck:
+      test: ["CMD", "pwsh", "-NoProfile", "-NonInteractive", "-Command", "Import-Module PSCompassOne; Test-PSCompassOneConnection"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    security_opt:
+      - no-new-privileges:true
+      - read-only-root-filesystem:true
+    user: pscompassone:pscompassone
+    read_only: true
+    tmpfs:
+      - /tmp:size=100M,mode=1777
+      - /run:size=50M,mode=1777
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - pscompassone_net
+    restart: unless-stopped
+
+  pscompassone_test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+      args:
+        VERSION: test
+    environment:
+      - PSCOMPASSONE_CONFIG=/etc/pscompassone/config
+      - PSModulePath=/usr/local/share/powershell/Modules
+      - PSCOMPASSONE_TEST=true
+      - PSCOMPASSONE_LOG_LEVEL=Debug
+      - PESTER_OUTPUT_PATH=/app/test/results
+    volumes:
+      - test_config:/etc/pscompassone/config
+      - test_logs:/var/log/pscompassone
+      - test_results:/app/test/results
+      - test_modules:/usr/local/share/powershell/Modules
+    security_opt:
+      - no-new-privileges:true
+    user: pscompassone:pscompassone
+    tmpfs:
+      - /tmp:size=100M,mode=1777
+    networks:
+      - pscompassone_net
+    depends_on:
+      - pscompassone
+
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/config
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/logs
+  modules:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/modules
+  test_config:
+    driver: local
+  test_logs:
+    driver: local
+  test_results:
+    driver: local
+  test_modules:
+    driver: local
+
+networks:
+  pscompassone_net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+    driver_opts:
+      encrypted: "true"
