@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pscompassone-config
+  namespace: pscompassone
+  labels:
+    app: pscompassone
+    component: configuration
+    version: 1.0.0
+    managed-by: kubernetes
+data:
+  # PowerShell module path configuration for cross-platform compatibility
+  PSModulePath: /usr/local/share/powershell/Modules:/opt/microsoft/powershell/Modules:/usr/local/pscompassone/modules
+
+  # Comprehensive PSCompassOne module configuration settings
+  module.config: |
+    {
+      "LogLevel": "Information",
+      "CacheEnabled": true,
+      "CacheExpiration": "3600",
+      "MaxRetries": "3",
+      "RetryInterval": "2",
+      "MaxConcurrentOperations": "10",
+      "DefaultPageSize": "50",
+      "RequestTimeout": "30",
+      "BulkOperationLimit": "100",
+      "EnableMetrics": true,
+      "MetricsEndpoint": "/metrics"
+    }
+
+  # Detailed logging configuration settings for containerized environment
+  logging.config: |
+    {
+      "LogPath": "/var/log/pscompassone",
+      "LogRetention": "30",
+      "LogFormat": "JSON",
+      "VerboseLogging": false,
+      "IncludeTimestamp": true,
+      "IncludeSource": true,
+      "LogRotation": "1d",
+      "MaxLogSize": "100MB",
+      "CompressArchives": true,
+      "StructuredLogging": true,
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "System": "Warning"
+      }
+    }
+
+  # Validation rules for configuration integrity
+  validation.rules: |
+    {
+      "PSModulePath": {
+        "pattern": "^(/[a-zA-Z0-9/_-]+)+(:[/a-zA-Z0-9/_-]+)*$",
+        "severity": "Error",
+        "message": "Must contain valid PowerShell module paths with proper separators"
+      },
+      "module.config": {
+        "required": ["LogLevel", "CacheEnabled", "MaxRetries", "MaxConcurrentOperations"],
+        "severity": "Error",
+        "message": "Must contain valid JSON configuration with all required fields"
+      },
+      "logging.config": {
+        "path_pattern": "^/var/log/pscompassone(/[a-zA-Z0-9/_-]+)*$",
+        "severity": "Warning",
+        "message": "Must specify valid logging settings with proper paths"
+      }
+    }
+
+  # Integration configuration for deployment and environment variables
+  integration.config: |
+    {
+      "deployment": {
+        "mountPath": "/etc/pscompassone/config",
+        "volumeName": "config-volume",
+        "readOnly": true,
+        "mountPropagation": "None",
+        "optional": false
+      },
+      "environmentVariables": [
+        {
+          "name": "PSModulePath",
+          "valueFrom": {
+            "configMapKeyRef": {
+              "name": "pscompassone-config",
+              "key": "PSModulePath",
+              "optional": false
+            }
+          }
+        },
+        {
+          "name": "PSCOMPASSONE_CONFIG",
+          "valueFrom": {
+            "configMapKeyRef": {
+              "name": "pscompassone-config",
+              "key": "module.config",
+              "optional": false
+            }
+          }
+        }
+      ]
+    }
